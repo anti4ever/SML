@@ -1,4 +1,7 @@
 import streamlit as st
+# Запуск: streamlit run d:\sml2\sml2\sml.py
+# Выход: Ctrl+C
+
 import math
 import numpy as np
 import matplotlib.pyplot as plt
@@ -20,7 +23,7 @@ st.table(frame_pipe)
 #Sy = 379 # Предел текучести, МПа
 Sy = st.number_input('Минимальный предел текучести, МПа', value=379, step=None)
 
-data_Sy = {'Группа прочности' : ['H40', 'J55 (K55, Д)', 'K72 (К)', 'N80 (N80-Q, L80, Е)', 'C90', 'C95 (T95, Л)','P110 (М)', 'Q125', 'Q135 (Р)' ], 'Минимальный предел текучести, МПа' :[276, 379, 490, 552, 621, 655, 758, 862, 930]}
+data_Sy = {'Группа прочности' : ['H40', 'J55 (K55, Д)', 'K72 (К)', 'N80 (N80-Q, L80, Е)', 'C90', 'C95 (T95, Л)','P110 (М)', 'Q125', 'Q135 (Р)', '- 140', '- 150' ], 'Минимальный предел текучести, МПа' :[276, 379, 490, 552, 621, 655, 758, 862, 930, 966, 1035]}
 frame_Sy = pd.DataFrame(data_Sy)
 #st.write(frame_Sy)
 st.table(frame_Sy)
