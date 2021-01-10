@@ -1,1 +1,1 @@
-web: streamlit run sml.py
+web: sh setup.sh && streamlit run sml.py
