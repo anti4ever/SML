@@ -1,1 +1,1 @@
-web: streamlit run sml.py
+web: streamlit run SML.py
