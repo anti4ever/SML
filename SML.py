@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.optimize import *
 
-st.title('Построение элипса фон Мезиса, расчет параметров и характеристик обсадной трубы')
+st.title('Построение эллипса фон Мезиса, расчет параметров и характеристик обсадной трубы')
 
 # Исходные данные:
 #D = 177.8 # Диаметр трубы, мм
@@ -315,7 +315,7 @@ plt.ylabel("Давление, МПа",labelpad=420)
 ax.yaxis.set_minor_locator(plt.MultipleLocator(10)) # Цена деления
 ax.xaxis.set_minor_locator(plt.MultipleLocator(500)) # Цена деления
 
-plt.plot(Pi_plot[0]/1000,Pi_plot[1],color='blue',label='Элипс фон Мизеса') # Элипс нагрузка/внутреннее давление квадранты 1, 2
+plt.plot(Pi_plot[0]/1000,Pi_plot[1],color='blue',label='Эллипс фон Мизеса') # Элипс нагрузка/внутреннее давление квадранты 1, 2
 plt.plot(Po_plot[0]/1000,Po_plot[1],color='blue') # Элипс нагрузка/наружнее давление квадранты 3, 4
 plt.plot(Po_ISO_plot[0]/1000,Po_ISO_plot[1],color='red',label='Наружнее давление определенное по ISO 10400') # Элипс нагрузка/наружнее давление квадранты 3, 4 по ISO 10400
 plt.plot([-F_max_con/1000,-F_max_con/1000],[Con_Pi,-Con_Po],color='green',label='Ограничение по сжатию для соединения') #Ограничение по сжатию для соединения
