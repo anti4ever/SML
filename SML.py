@@ -1,5 +1,5 @@
 import streamlit as st
-# Запуск: streamlit run d:\sml2\sml2\sml.py
+# Запуск: streamlit run d:\sml\sml\sml.py
 # Выход: Ctrl+C
 
 import math
@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.optimize import *
+import altair as alt
 
 st.title('Построение эллипса фон Мизеса, расчет параметров и характеристик обсадной трубы')
 
@@ -339,3 +340,40 @@ plt.legend(loc='upper left') # Настройка расположения ле�
 
 # Вывод графика
 st.pyplot(plt)
+
+st.header('Расчет изменения наружнего/внутреннего давления с изменением толщины стенки')
+#PN  Давление граничное, МПа
+PN = st.number_input('Граничное наружнее давление, МПа (по умолчанию 100% от максимальнрого наружнего давления)', value=1.00*Collapse (0,D,t,Ap,Sy), max_value=Collapse (0,D,t,Ap,Sy), step=None)
+#st.number_input('Граничное давление, МПа', value=round((0,75*Collapse (0,D,t,Ap,Sy)), 2), step=None)
+PV = st.number_input('Граничное внутреннее давление, МПа (по умолчанию 85% от максимальнрого внутреннего давления)', value=0.85*2*Sy*0.875*t/D, max_value=2*Sy*0.875*t/D, step=None)
+
+sigma_t = st.number_input('Процент износа толщины стенки, % (по умолчанию 25% от номинальной толщины стенки, мксимальное значение 50%)', value=25, min_value=0, max_value=50, step=None)
+
+st.header('Наружнее давление:')
+t_ar = np.append( np.arange(-t, -t*(100-sigma_t)/100, 0.01), -t)*-1
+P_n = np.array([Collapse(0,D/25.4,t/25.4,Ap,Sy) for t in t_ar])
+#P_ras = np.full(t_ar.size, round(Collapse (0,D,t,Ap,Sy), 2))
+P_ras = np.full(t_ar.size, PN)
+source1 = pd.DataFrame({'t' : t_ar, 'P': P_n, 'P_ras': P_ras})
+
+#alt_g = alt.Chart(source).mark_line(color='red').encode( x='t', y='P', tooltip=['t', 'P'])
+#alt_g2 = alt.Chart(source).mark_line(color='blue').encode(y='P_ras')
+alt_g = alt.Chart(source1).encode( x='t', tooltip=['t', 'P', 'P_ras'])
+alt_g1 = alt_g.mark_line(color='red').encode(y='P')
+#alt_g1 = alt_g.mark_line(color='red').encode(alt.Y('P', title='Давление граничное, МПа'))
+alt_g2 = alt_g.mark_line(color='blue').encode(y='P_ras')
+alt_g.properties(width=600)
+st.altair_chart(alt_g1 + alt_g2, use_container_width=True)
+
+st.header('Внутреннее давление:')
+P_v = np.array([2*Sy*0.875*t/D for t in t_ar])
+P_ras_v = np.full(t_ar.size, PV)
+
+source2 = pd.DataFrame({'t' : t_ar, 'P': P_v, 'P_ras': P_ras_v})
+
+alt_g_v = alt.Chart(source2).encode( x='t', tooltip=['t', 'P', 'P_ras'])
+alt_g1_v = alt_g_v.mark_line(color='red').encode(y='P')
+#alt_g1 = alt_g.mark_line(color='red').encode(alt.Y('P', title='Давление граничное, МПа'))
+alt_g2_v = alt_g_v.mark_line(color='blue').encode(y='P_ras')
+alt_g_v.properties(width=600)
+st.altair_chart(alt_g1_v + alt_g2_v, use_container_width=True)
